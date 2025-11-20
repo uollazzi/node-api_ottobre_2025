@@ -17,6 +17,20 @@ export const logger = winston.createLogger({
     ]
 });
 
+export const dbLogger = winston.createLogger({
+    level: process.env.LOG_LEVEL ?? "error",
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.printf(({ timestamp, level, message }) => {
+            return `${timestamp} [${level.toUpperCase()}] ${message}`;
+        })
+    ),
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: path.join("logs", "db.log") }),
+    ]
+});
+
 export const loggerMiddleware = (req: Request, res: Response, next: NextFunction) => {
     // log manuale
     const logString = `LOG: ${new Date().toUTCString()} - ${req.method} ${req.url}`;

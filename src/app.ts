@@ -1,10 +1,12 @@
-import express, { NextFunction, Request, Response } from "express";
 import { config } from "dotenv";
-import { logger, loggerMiddleware } from "./middlewares/logger";
 config({ quiet: true });
 
+import express, { NextFunction, Request, Response } from "express";
+import { logger, loggerMiddleware } from "./middlewares/logger";
 import pagesRouter from "./routes/pages";
 import apiRouter from "./routes/api";
+import postsRouter from "./routes/posts";
+
 
 const port = process.env.PORT ?? 3000;
 const app = express();
@@ -15,8 +17,11 @@ app.use(loggerMiddleware);
 
 app.use(express.static("./public"));
 
+app.use(express.json());
+
 app.use("/", pagesRouter);
 app.use("/api", apiRouter);
+app.use("/api/post", postsRouter);
 
 // 404 
 app.use((req: Request, res: Response) => {
