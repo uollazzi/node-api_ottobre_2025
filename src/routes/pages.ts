@@ -3,7 +3,7 @@ import path from "node:path";
 
 const router = Router();
 
-router.get("/miasorella", (req: Request, res: Response) => {
+router.get("/pippo", (req: Request, res: Response) => {
     const cwd = process.cwd();
     res.sendFile(path.join(cwd, "public", "pippo.jpg"));
 });
